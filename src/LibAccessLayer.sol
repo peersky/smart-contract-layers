@@ -33,6 +33,17 @@ library LibAccessLayer {
         ls[layerIndex].afterSig = afterCallMethodSignature;
     }
 
+    function addLayer(LayerStruct memory newLayer) internal {
+        LayerStruct[] storage ls = accessLayersStorage();
+        ls.push(newLayer);
+    }
+
+    function setLayers(LayerStruct[] memory newLayers) internal {
+        for (uint256 i = 0; i < newLayers.length; i++) {
+            addLayer(newLayers[i]);
+        }
+    }
+
     function addLayer(
         address layerAddress,
         bytes memory layerConfigData,
