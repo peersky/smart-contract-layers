@@ -16,17 +16,11 @@ contract SampleLayer is ILayer {
         nonce++;
     }
 
-    function beforeCallValidation(
-        bytes memory,
-        bytes4,
-        address,
-        uint256,
-        bytes memory
-    ) external returns (bytes memory) {
+    function beforeCallValidation(bytes memory, bytes4, address, uint256, bytes memory) public returns (bytes memory) {
         return bytes.concat(bytes32(simpleContractWideReentrancyEnter()));
     }
 
-    function afterCallValidation(bytes memory, bytes4, address, uint256, bytes memory, bytes memory) external {
+    function afterCallValidation(bytes memory, bytes4, address, uint256, bytes memory, bytes memory) public {
         simpleContractWideReentrancyExit();
     }
 }

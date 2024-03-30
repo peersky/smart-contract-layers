@@ -5,15 +5,15 @@ const func: DeployFunction = async (hre: HardhatRuntimeEnvironment) => {
   const { deployments, getNamedAccounts } = hre;
   const { deploy } = deployments;
 
-  const { deployer, owner } = await getNamedAccounts();
+  const { deployer } = await getNamedAccounts();
 
-  const result = await deploy("MockERC20", {
+  const result = await deploy("SampleLayer", {
     from: deployer,
-    args: ["TokenName", "TokenSymbol", owner],
+    args: [],
     skipIfAlreadyDeployed: true,
   });
   console.log("deployed at", result.address);
 };
 
 export default func;
-func.tags = ["mockERC20_token"];
+func.tags = ["poc", "simple_layer"];
