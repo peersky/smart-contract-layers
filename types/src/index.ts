@@ -3,4 +3,6 @@
 /* eslint-disable */
 import type * as mocks from "./mocks";
 export type { mocks };
+export type { ILayer } from "./ILayer";
 export type { LayeredProxy } from "./LayeredProxy";
+export type { SampleLayer } from "./SampleLayer";

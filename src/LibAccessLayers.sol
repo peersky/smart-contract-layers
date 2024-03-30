@@ -2,7 +2,7 @@
 pragma solidity ^0.8.20;
 import "hardhat/console.sol";
 
-library LibAccessLayer {
+library LibAccessLayers {
     bytes32 constant ACCESS_LAYERS_STORAGE_POSITION = keccak256("lib.access.layer.storage");
 
     struct LayerStruct {

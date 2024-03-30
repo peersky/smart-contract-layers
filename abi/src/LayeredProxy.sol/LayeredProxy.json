@@ -29,7 +29,7 @@
             "type": "bytes"
           }
         ],
-        "internalType": "struct LibAccessLayer.LayerStruct[]",
+        "internalType": "struct LibAccessLayers.LayerStruct[]",
         "name": "layers",
         "type": "tuple[]"
       }

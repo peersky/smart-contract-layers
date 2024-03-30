@@ -81,6 +81,10 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.Address__factory>;
     getContractFactory(
+      name: "ILayer",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.ILayer__factory>;
+    getContractFactory(
       name: "LayeredProxy",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.LayeredProxy__factory>;
@@ -88,6 +92,10 @@ declare module "hardhat/types/runtime" {
       name: "MockERC20",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.MockERC20__factory>;
+    getContractFactory(
+      name: "SampleLayer",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.SampleLayer__factory>;
 
     getContractAt(
       name: "Ownable",
@@ -175,6 +183,11 @@ declare module "hardhat/types/runtime" {
       signer?: ethers.Signer
     ): Promise<Contracts.Address>;
     getContractAt(
+      name: "ILayer",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.ILayer>;
+    getContractAt(
       name: "LayeredProxy",
       address: string,
       signer?: ethers.Signer
@@ -184,6 +197,11 @@ declare module "hardhat/types/runtime" {
       address: string,
       signer?: ethers.Signer
     ): Promise<Contracts.MockERC20>;
+    getContractAt(
+      name: "SampleLayer",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.SampleLayer>;
 
     // default types
     getContractFactory(

@@ -2,4 +2,6 @@
 /* tslint:disable */
 /* eslint-disable */
 export * as mocks from "./mocks";
+export { ILayer__factory } from "./ILayer__factory";
 export { LayeredProxy__factory } from "./LayeredProxy__factory";
+export { SampleLayer__factory } from "./SampleLayer__factory";

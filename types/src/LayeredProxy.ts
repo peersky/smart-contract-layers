@@ -11,7 +11,7 @@ import type {
   OnEvent,
 } from "../common";
 
-export declare namespace LibAccessLayer {
+export declare namespace LibAccessLayers {
   export type LayerStructStruct = {
     layerAddess: string;
     beforeSig: BytesLike;

@@ -2,15 +2,15 @@
 pragma solidity ^0.8.20;
 
 import "@openzeppelin/contracts/proxy/transparent/TransparentUpgradeableProxy.sol";
-import "./AccessLayer.sol";
-import "./LibAccessLayer.sol";
+import "./AccessLayers.sol";
+import "./LibAccessLayers.sol";
 
-contract LayeredProxy is TransparentUpgradeableProxy, AccessLayer {
+contract LayeredProxy is TransparentUpgradeableProxy, AccessLayers {
     constructor(
         address initialOwner,
-        LibAccessLayer.LayerStruct[] memory layers
+        LibAccessLayers.LayerStruct[] memory layers
     ) TransparentUpgradeableProxy(address(0), initialOwner, "") {
-        LibAccessLayer.setLayers(layers);
+        LibAccessLayers.setLayers(layers);
     }
 
     function _fallback() internal virtual override layers(msg.sig, msg.sender, msg.data, msg.value) {
