@@ -2,25 +2,35 @@
 pragma solidity ^0.8.20;
 import "./ILayer.sol";
 
-contract SampleLayer is ILayer {
-    mapping(uint256 => bool) enteredLayer;
-    uint256 nonce;
+contract RecoverableFuse is ILayer {
+    mapping(address => mapping(bytes4 => uint256)) usage;
+    mapping(address => mapping(bytes4 => uint256)) usageUpdatedAtBlock;
 
-    function simpleContractWideReentrancyEnter() private returns (uint256) {
-        require(!enteredLayer[nonce], "reentrancy caught!");
-        enteredLayer[nonce] = true;
-        return nonce;
+    function beforeCallValidation(
+        bytes memory,
+        bytes4 messageSig,
+        address,
+        uint256,
+        bytes memory
+    ) public returns (bytes memory) {
+        if (usageUpdatedAtBlock[msg.sender][messageSig] != block.number) {
+            usage[msg.sender][messageSig] = 0;
+            usageUpdatedAtBlock[msg.sender][messageSig] = block.number;
+        } else {
+            usage[msg.sender][messageSig] += 1;
+        }
+        return "";
     }
 
-    function simpleContractWideReentrancyExit() private {
-        nonce++;
-    }
-
-    function beforeCallValidation(bytes memory, bytes4, address, uint256, bytes memory) public returns (bytes memory) {
-        return bytes.concat(bytes32(simpleContractWideReentrancyEnter()));
-    }
-
-    function afterCallValidation(bytes memory, bytes4, address, uint256, bytes memory, bytes memory) public {
-        simpleContractWideReentrancyExit();
+    function afterCallValidation(
+        bytes memory layerConfig,
+        bytes4 messageSig,
+        address,
+        uint256,
+        bytes memory,
+        bytes memory
+    ) public view {
+        uint256 blockQuota = uint256(bytes32(layerConfig));
+        require(usage[msg.sender][messageSig] < blockQuota, "Out of quota this block");
     }
 }

@@ -1,6 +1,6 @@
 import { HardhatRuntimeEnvironment } from "hardhat/types";
 import { DeployFunction } from "hardhat-deploy/types";
-import { LayeredProxy, SampleLayer } from "../types";
+import { LayeredProxy, RecoverableFuse } from "../types";
 import { ethers } from "hardhat";
 import { LibAccessLayers } from "../types/src/LayeredProxy";
 
@@ -10,11 +10,11 @@ const func: DeployFunction = async (hre: HardhatRuntimeEnvironment) => {
 
   const { deployer, owner } = await getNamedAccounts();
 
-  const simpleLayer = await deployments.get("SampleLayer");
+  const simpleLayer = await deployments.get("RecoverableFuse");
   const simpleLayerContract = (await ethers.getContractAt(
     simpleLayer.abi,
     simpleLayer.address,
-  )) as SampleLayer;
+  )) as RecoverableFuse;
 
   let layer: LibAccessLayers.LayerStructStruct = {
     layerAddess: simpleLayer.address,
@@ -28,15 +28,20 @@ const func: DeployFunction = async (hre: HardhatRuntimeEnvironment) => {
         "afterCallValidation(bytes,bytes4,address,uint256,bytes,bytes)"
       ],
     ),
-    layerConfigData: "",
+    layerConfigData: ethers.utils.defaultAbiCoder.encode(["uint256"], [10]),
   };
 
-  const result = await deploy("LayeredProxy", {
+  const result = await deploy("MockERC20", {
     from: deployer,
-    args: [owner, [layer]],
+    args: [],
     skipIfAlreadyDeployed: true,
   });
-  console.log("deployed at", result.address);
+
+  const lp = await deploy("LayeredProxy", {
+    from: deployer,
+    args: [owner, [layer], result.address],
+    skipIfAlreadyDeployed: true,
+  });
 };
 
 export default func;

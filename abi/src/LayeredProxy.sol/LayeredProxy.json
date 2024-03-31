@@ -32,6 +32,11 @@
         "internalType": "struct LibAccessLayers.LayerStruct[]",
         "name": "layers",
         "type": "tuple[]"
+      },
+      {
+        "internalType": "address",
+        "name": "initialImplementation",
+        "type": "address"
       }
     ],
     "stateMutability": "nonpayable",
@@ -109,6 +114,19 @@
     "inputs": [
       {
         "indexed": true,
+        "internalType": "uint256",
+        "name": "newBalance",
+        "type": "uint256"
+      }
+    ],
+    "name": "BalanceReduced",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
         "internalType": "address",
         "name": "implementation",
         "type": "address"
@@ -120,5 +138,9 @@
   {
     "stateMutability": "payable",
     "type": "fallback"
+  },
+  {
+    "stateMutability": "payable",
+    "type": "receive"
   }
 ]

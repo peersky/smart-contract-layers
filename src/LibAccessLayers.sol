@@ -1,6 +1,5 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.20;
-import "hardhat/console.sol";
 
 library LibAccessLayers {
     bytes32 constant ACCESS_LAYERS_STORAGE_POSITION = keccak256("lib.access.layer.storage");
@@ -76,8 +75,8 @@ library LibAccessLayers {
         bytes calldata data,
         uint256 value
     ) internal returns (bytes[] memory) {
-        bytes[] memory layerReturns;
         LayerStruct[] storage ls = accessLayersStorage();
+        bytes[] memory layerReturns = new bytes[](ls.length);
         for (uint256 i = 0; i < ls.length; i++) {
             layerReturns[i] = validateLayerBeforeCall(ls[i], _selector, sender, data, value);
         }
@@ -91,11 +90,12 @@ library LibAccessLayers {
         bytes memory data,
         uint256 value
     ) internal returns (bytes memory) {
-        (, bytes memory retval) = (
+        (bool success, bytes memory retval) = (
             layer.layerAddess.call(
                 abi.encodeWithSelector(layer.beforeSig, layer.layerConfigData, _selector, sender, value, data)
             )
         );
+        require(success, extractRevertReason(retval));
         return retval;
     }
 
@@ -112,6 +112,21 @@ library LibAccessLayers {
         }
     }
 
+    function extractRevertReason(bytes memory revertData) internal pure returns (string memory reason) {
+        uint l = revertData.length;
+        if (l < 68) return "";
+        uint t;
+        assembly {
+            revertData := add(revertData, 4)
+            t := mload(revertData) // Save the content of the length slot
+            mstore(revertData, sub(l, 4)) // Set proper length
+        }
+        reason = abi.decode(revertData, (string));
+        assembly {
+            mstore(revertData, t) // Restore the content of the length slot
+        }
+    }
+
     function validateLayerAfterCall(
         LayerStruct storage layer,
         bytes4 _selector,
@@ -120,7 +135,7 @@ library LibAccessLayers {
         uint256 value,
         bytes memory beforeCallReturnValue
     ) internal {
-        (bool success, ) = layer.layerAddess.call(
+        (bool success, bytes memory reason) = layer.layerAddess.call(
             abi.encodeWithSelector(
                 layer.afterSig,
                 layer.layerConfigData,
@@ -131,6 +146,6 @@ library LibAccessLayers {
                 beforeCallReturnValue
             )
         );
-        require(success, "after call failed");
+        require(success, extractRevertReason(reason));
     }
 }

@@ -3,12 +3,12 @@
     "inputs": [
       {
         "internalType": "bytes",
-        "name": "",
+        "name": "layerConfig",
         "type": "bytes"
       },
       {
         "internalType": "bytes4",
-        "name": "",
+        "name": "messageSig",
         "type": "bytes4"
       },
       {
@@ -34,7 +34,7 @@
     ],
     "name": "afterCallValidation",
     "outputs": [],
-    "stateMutability": "nonpayable",
+    "stateMutability": "view",
     "type": "function"
   },
   {
@@ -46,7 +46,7 @@
       },
       {
         "internalType": "bytes4",
-        "name": "",
+        "name": "messageSig",
         "type": "bytes4"
       },
       {

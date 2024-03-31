@@ -5,9 +5,9 @@ const func: DeployFunction = async (hre: HardhatRuntimeEnvironment) => {
   const { deployments, getNamedAccounts } = hre;
   const { deploy } = deployments;
 
-  const { deployer } = await getNamedAccounts();
+  const { deployer, owner } = await getNamedAccounts();
 
-  await deploy("RecoverableFuse", {
+  await deploy("Drainer", {
     from: deployer,
     args: [],
     skipIfAlreadyDeployed: true,
@@ -15,4 +15,5 @@ const func: DeployFunction = async (hre: HardhatRuntimeEnvironment) => {
 };
 
 export default func;
-func.tags = ["poc", "simple_layer"];
+func.dependencies = ["layer_proxy"];
+func.tags = ["poc", "drainer"];

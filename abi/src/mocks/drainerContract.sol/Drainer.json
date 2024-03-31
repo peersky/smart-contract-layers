@@ -1,0 +1,25 @@
+[
+  {
+    "inputs": [],
+    "stateMutability": "nonpayable",
+    "type": "constructor"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address payable",
+        "name": "victim",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "cycles",
+        "type": "uint256"
+      }
+    ],
+    "name": "drain",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  }
+]

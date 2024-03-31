@@ -1,0 +1,9 @@
+[
+  {
+    "inputs": [],
+    "name": "drainedMethod",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  }
+]

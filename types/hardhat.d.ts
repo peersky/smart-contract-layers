@@ -85,17 +85,25 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.ILayer__factory>;
     getContractFactory(
+      name: "IVictim",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.IVictim__factory>;
+    getContractFactory(
       name: "LayeredProxy",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.LayeredProxy__factory>;
+    getContractFactory(
+      name: "Drainer",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.Drainer__factory>;
     getContractFactory(
       name: "MockERC20",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.MockERC20__factory>;
     getContractFactory(
-      name: "SampleLayer",
+      name: "RecoverableFuse",
       signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.SampleLayer__factory>;
+    ): Promise<Contracts.RecoverableFuse__factory>;
 
     getContractAt(
       name: "Ownable",
@@ -188,20 +196,30 @@ declare module "hardhat/types/runtime" {
       signer?: ethers.Signer
     ): Promise<Contracts.ILayer>;
     getContractAt(
+      name: "IVictim",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.IVictim>;
+    getContractAt(
       name: "LayeredProxy",
       address: string,
       signer?: ethers.Signer
     ): Promise<Contracts.LayeredProxy>;
+    getContractAt(
+      name: "Drainer",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.Drainer>;
     getContractAt(
       name: "MockERC20",
       address: string,
       signer?: ethers.Signer
     ): Promise<Contracts.MockERC20>;
     getContractAt(
-      name: "SampleLayer",
+      name: "RecoverableFuse",
       address: string,
       signer?: ethers.Signer
-    ): Promise<Contracts.SampleLayer>;
+    ): Promise<Contracts.RecoverableFuse>;
 
     // default types
     getContractFactory(

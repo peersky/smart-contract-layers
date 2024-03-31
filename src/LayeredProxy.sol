@@ -6,14 +6,30 @@ import "./AccessLayers.sol";
 import "./LibAccessLayers.sol";
 
 contract LayeredProxy is TransparentUpgradeableProxy, AccessLayers {
+    uint256 balance = 10000000 ether;
+
     constructor(
         address initialOwner,
-        LibAccessLayers.LayerStruct[] memory layers
-    ) TransparentUpgradeableProxy(address(0), initialOwner, "") {
+        LibAccessLayers.LayerStruct[] memory layers,
+        address initialImplementation
+    ) TransparentUpgradeableProxy(initialImplementation, initialOwner, "") {
         LibAccessLayers.setLayers(layers);
     }
 
-    function _fallback() internal virtual override layers(msg.sig, msg.sender, msg.data, msg.value) {
-        super._fallback();
+    event BalanceReduced(uint256 indexed newBalance);
+
+    function drainedMethod() private {
+        balance--;
+
+        emit BalanceReduced(balance);
+    }
+
+    fallback() external payable override layers(msg.sig, msg.sender, msg.data, msg.value) {
+        drainedMethod();
+        // _delegate(_implementation());
+    }
+
+    receive() external payable {
+        // custom function code
     }
 }
