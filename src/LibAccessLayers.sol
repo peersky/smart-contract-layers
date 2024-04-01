@@ -108,7 +108,7 @@ library LibAccessLayers {
     ) internal {
         LayerStruct[] storage ls = accessLayersStorage();
         for (uint256 i = 0; i < ls.length; i++) {
-            validateLayerAfterCall(ls[i], _selector, sender, data, value, beforeCallReturns[i]);
+            validateLayerAfterCall(ls[ls.length - 1 - i], _selector, sender, data, value, beforeCallReturns[i]);
         }
     }
 
