@@ -35,12 +35,12 @@ Tested consumption of Drainer `drain(address payable victim, uint256 cycles)` fu
 
 Benchmark is given for RateLimiting functionality assuming that drain function can have different `cycles` argument
 
-| First Header                         | 1 tx/block rate | 10 tx/block rate | 100 tx/block rate |
-| ------------------------------------ | --------------- | ---------------- | ----------------- |
-| No Layer modifier                    | 82,897          | 131,704          | 619,774           |
-| Layer modifier installed (no layers) | 85,344          | 138,174          | 666,474           |
-| 1 Layer call added (Interface only)  | **97,980**      | **188,034**      | **1,088,574**     |
-| 1 Layer call added (Rate limiter x1) | 97,980          | 239,337          | 1,206,027         |
-| 2 Layer call added (Rate limiter x2) | 153,499         | 293,647          | 1,695,127         |
+| First Header                            | gas used (cycles=1) | delta from fixture |
+| --------------------------------------- | ------------------- | ------------------ |
+| No Layer modifier (fixture consumption) | 31,231              | 0                  |
+| Layer modifier installed (no layers)    | 33,869              | + 2 638            |
+| 1 Layer call added (Interface only)     | **50,310**          | **+ 19 079**        |
+| 1 Layer call added (Rate limiter x1)    | 75,476              | + 44 244           |
+| 2 Layer call added (Rate limiter x2)    | 117,024             | + 85 793           |
 
 _\*Bold numbers show cost to call layer contract protection wrapper that has no internal processing overhead._

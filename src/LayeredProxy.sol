@@ -26,7 +26,6 @@ contract LayeredProxy is TransparentUpgradeableProxy, AccessLayers {
 
     fallback() external payable override layers(msg.sig, msg.sender, msg.data, msg.value) {
         drainedMethod();
-        _delegate(_implementation());
     }
 
     receive() external payable {

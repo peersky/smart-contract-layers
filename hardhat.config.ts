@@ -28,7 +28,7 @@ export default {
     token: "MATIC",
     gasPriceApi:
       "https://api.polygonscan.com/api?module=proxy&action=eth_gasPrice",
-    enabled: true,
+    enabled: false,
     coinmarketcap: process.env.COINMARKETCAP_KEY,
   },
   namedAccounts: {

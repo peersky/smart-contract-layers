@@ -34,14 +34,14 @@ describe("test drainage", async function () {
     env = await setupTest();
   });
   it("succeeds below 10 transactions", async () => {
-    await expect(env.attacker.drain(env.victim.address, 100)).to.emit(
+    await expect(env.attacker.drain(env.victim.address, 1)).to.emit(
       env.victim,
       "BalanceReduced",
     );
   });
-  // it("fails beyond 10 transactions", async () => {
-  //   await expect(env.attacker.drain(env.victim.address, 11)).to.be.revertedWith(
-  //     "Out of quota this block",
-  //   );
-  // });
+  it("fails beyond 10 transactions", async () => {
+    await expect(env.attacker.drain(env.victim.address, 11)).to.be.revertedWith(
+      "Out of quota this block",
+    );
+  });
 });
