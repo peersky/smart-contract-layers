@@ -104,6 +104,10 @@ declare module "hardhat/types/runtime" {
       name: "RecoverableFuse",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.RecoverableFuse__factory>;
+    getContractFactory(
+      name: "RecoverableFuse",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.RecoverableFuse__factory>;
 
     getContractAt(
       name: "Ownable",
@@ -215,6 +219,11 @@ declare module "hardhat/types/runtime" {
       address: string,
       signer?: ethers.Signer
     ): Promise<Contracts.MockERC20>;
+    getContractAt(
+      name: "RecoverableFuse",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.RecoverableFuse>;
     getContractAt(
       name: "RecoverableFuse",
       address: string,

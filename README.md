@@ -31,11 +31,16 @@ In the particular implementation rate is limited to 10 transactions per block an
 ### Benchmarking
 
 Given by hardhat compiler with settings as per hardhat.config.ts. Rate limits adjusted for each column (not testing reverted gas consumption).
-Tested consumption of Drainer `drain()` function
+Tested consumption of Drainer `drain(address payable victim, uint256 cycles)` function.
 
-| First Header                         | 1 tx per block | 10 tx per block | 100 tx per block |
-| ------------------------------------ | -------------- | --------------- | ---------------- |
-| No Layer modifier                    | 82,897         | 131,704         | 619,774          |
-| Layer modifier installed (no layers) | 85,344         | 138,174         | 666,474          |
-| 1 Layer call added (no checks)       | 122,768        | 239,337         | 1,206,027        |
-| 2 Layer call added (Rate limiter x2) | 153,499        | 293,647         | 1,695,127        |
+Benchmark is given for RateLimiting functionality assuming that drain function can have different `cycles` argument
+
+| First Header                         | 1 tx/block rate | 10 tx/block rate | 100 tx/block rate |
+| ------------------------------------ | --------------- | ---------------- | ----------------- |
+| No Layer modifier                    | 82,897          | 131,704          | 619,774           |
+| Layer modifier installed (no layers) | 85,344          | 138,174          | 666,474           |
+| 1 Layer call added (Interface only)  | **97,980**      | **188,034**      | **1,088,574**     |
+| 1 Layer call added (Rate limiter x1) | 97,980          | 239,337          | 1,206,027         |
+| 2 Layer call added (Rate limiter x2) | 153,499         | 293,647          | 1,695,127         |
+
+_\*Bold numbers show cost to call layer contract protection wrapper that has no internal processing overhead._
