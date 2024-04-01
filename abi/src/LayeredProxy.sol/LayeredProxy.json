@@ -113,13 +113,25 @@
     "anonymous": false,
     "inputs": [
       {
-        "indexed": true,
+        "indexed": false,
+        "internalType": "address",
+        "name": "from",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "to",
+        "type": "address"
+      },
+      {
+        "indexed": false,
         "internalType": "uint256",
-        "name": "newBalance",
+        "name": "amount",
         "type": "uint256"
       }
     ],
-    "name": "BalanceReduced",
+    "name": "Transfer",
     "type": "event"
   },
   {

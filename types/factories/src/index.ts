@@ -2,7 +2,6 @@
 /* tslint:disable */
 /* eslint-disable */
 export * as sampleLayerSol from "./SampleLayer.sol";
-export * as sampleLayer2Sol from "./SampleLayer2.sol";
 export * as mocks from "./mocks";
 export { ILayer__factory } from "./ILayer__factory";
 export { IVictim__factory } from "./IVictim__factory";

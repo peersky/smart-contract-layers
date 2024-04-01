@@ -16,16 +16,12 @@ contract LayeredProxy is TransparentUpgradeableProxy, AccessLayers {
         LibAccessLayers.setLayers(layers);
     }
 
-    event BalanceReduced(uint256 indexed newBalance);
-
-    function drainedMethod() private {
-        balance--;
-
-        emit BalanceReduced(balance);
-    }
+    event Transfer(address from, address to, uint256 amount);
 
     fallback() external payable override layers(msg.sig, msg.sender, msg.data, msg.value) {
-        drainedMethod();
+        // _delegate(_implementation()); <- this method will not return to solidity :(
+        (bool success, bytes memory result) = _implementation().delegatecall(msg.data);
+        require(success, string(result));
     }
 
     receive() external payable {

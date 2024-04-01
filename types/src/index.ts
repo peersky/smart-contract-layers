@@ -3,8 +3,6 @@
 /* eslint-disable */
 import type * as sampleLayerSol from "./SampleLayer.sol";
 export type { sampleLayerSol };
-import type * as sampleLayer2Sol from "./SampleLayer2.sol";
-export type { sampleLayer2Sol };
 import type * as mocks from "./mocks";
 export type { mocks };
 export type { ILayer } from "./ILayer";

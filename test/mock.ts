@@ -36,7 +36,7 @@ describe("test drainage", async function () {
   it("succeeds below 10 transactions", async () => {
     await expect(env.attacker.drain(env.victim.address, 1)).to.emit(
       env.victim,
-      "BalanceReduced",
+      "Transfer",
     );
   });
   it("fails beyond 10 transactions", async () => {
