@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.20;
+import "./ILayer.sol";
 
 library LibAccessLayers {
     bytes32 constant ACCESS_LAYERS_STORAGE_POSITION = keccak256("lib.access.layer.storage");
@@ -90,12 +91,14 @@ library LibAccessLayers {
         bytes memory data,
         uint256 value
     ) internal returns (bytes memory) {
-        (bool success, bytes memory retval) = (
-            layer.layerAddess.call(
-                abi.encodeWithSelector(layer.beforeSig, layer.layerConfigData, _selector, sender, value, data)
-            )
+        bytes memory retval = ILayer(layer.layerAddess).beforeCallValidation(
+            layer.layerConfigData,
+            _selector,
+            sender,
+            value,
+            data
         );
-        require(success, extractRevertReason(retval));
+
         return retval;
     }
 
@@ -135,17 +138,13 @@ library LibAccessLayers {
         uint256 value,
         bytes memory beforeCallReturnValue
     ) internal {
-        (bool success, bytes memory reason) = layer.layerAddess.call(
-            abi.encodeWithSelector(
-                layer.afterSig,
-                layer.layerConfigData,
-                _selector,
-                sender,
-                value,
-                data,
-                beforeCallReturnValue
-            )
+        ILayer(layer.layerAddess).afterCallValidation(
+            layer.layerConfigData,
+            _selector,
+            sender,
+            value,
+            data,
+            beforeCallReturnValue
         );
-        require(success, extractRevertReason(reason));
     }
 }
