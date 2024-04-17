@@ -1,0 +1,29 @@
+
+TargetContract.fallback(msg) {
+  LibAccessLayers.beforeCall(selector, sender, data, value) {
+    for ("all layers") {
+      new ILayer(layerAddress)
+      // Layer can Revert if validation fails
+      ILayer.beforeCallValidation(layerConfig, msg)
+      {
+        return beforeCallReturnValue
+      }
+
+    }
+     return beforeCallReturnValues
+  }
+  // [font-bold]
+  Implementation.delegateCall(msg.data)
+  LibAccessLayers.afterCall(selector, sender, data, value,beforeCallReturnValues) {
+    for ("all layers reverse") {
+      new ILayer(layerAddress)
+      // Layer can revert if validation fails after transaction
+      ILayer.afterCallValidation(layerConfig, msg,beforeCallResult)
+
+
+    }
+     return
+  }
+  return success
+
+}

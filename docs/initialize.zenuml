@@ -1,0 +1,14 @@
+
+TargetContract.initialize(layers){
+  LibAccessLayers.setLayers(layers)
+  {
+    for ("all layers") {
+    addLayer(address,layerConfigData)
+}
+    return
+  }
+  return success
+          
+}
+
+
