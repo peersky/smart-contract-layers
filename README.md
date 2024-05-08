@@ -80,8 +80,6 @@ import "./AccessLayers.sol";
 import "./LibAccessLayers.sol";
 
 contract LayeredProxy is TransparentUpgradeableProxy, AccessLayers {
-    uint256 balance = 10000000 ether;
-
     constructor(
         address initialOwner,
         LibAccessLayers.LayerStruct[] memory layers,
