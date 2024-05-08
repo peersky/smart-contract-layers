@@ -35,3 +35,64 @@ Contract protecting the implementation only needs to implement a [ILayer](https:
 Drainer contract calls victim number of times defined by Drainer function input.
 
 In the particular implementation rate is limited to 10 transactions per block and can be tested by `pnpm test`
+
+
+## Implementing your layer 
+
+Layer contract should only implement simple ILayer interface:
+
+```solidity
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.20;
+
+interface ILayer {
+    function beforeCallValidation(
+        bytes memory layerConfig,
+        bytes4 selector,
+        address sender,
+        uint256 value,
+        bytes memory data
+    ) external returns (bytes memory);
+
+    function afterCallValidation(
+        bytes memory layerConfig,
+        bytes4 selector,
+        address sender,
+        uint256 value,
+        bytes memory data,
+        bytes memory beforeCallResult
+    ) external;
+}
+```
+## Protecting with a layer 
+
+1. Add layers per your needs (in constructor, initializer etc)
+2. Wrap protected state access with layer modifier (fallback function for proxies)
+
+Reference implemnetation of [LayeredProxy](https://github.com/peersky/smart-contract-layers/blob/main/src/LayeredProxy.sol):
+
+```solidity
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.20;
+
+import "@openzeppelin/contracts/proxy/transparent/TransparentUpgradeableProxy.sol";
+import "./AccessLayers.sol";
+import "./LibAccessLayers.sol";
+
+contract LayeredProxy is TransparentUpgradeableProxy, AccessLayers {
+    uint256 balance = 10000000 ether;
+
+    constructor(
+        address initialOwner,
+        LibAccessLayers.LayerStruct[] memory layers,
+        address initialImplementation
+    ) TransparentUpgradeableProxy(initialImplementation, initialOwner, "") {
+        LibAccessLayers.setLayers(layers);
+    }
+
+    fallback() external payable override layers(msg.sig, msg.sender, msg.data, msg.value) {
+        (bool success, bytes memory result) = _implementation().delegatecall(msg.data);
+        require(success, string(result));
+    }
+}
+```
