@@ -1,12 +1,12 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.20;
-import "./ILayer.sol";
+import "./IERC7746.sol";
 
-contract RecoverableFuse is ILayer {
+contract RecoverableFuse is IERC7746 {
     mapping(address => mapping(bytes4 => uint256)) usage;
     mapping(address => mapping(bytes4 => uint256)) usageUpdatedAtBlock;
 
-    function beforeCallValidation(
+    function beforeCall(
         bytes memory,
         bytes4 messageSig,
         address,
@@ -22,7 +22,7 @@ contract RecoverableFuse is ILayer {
         return "";
     }
 
-    function afterCallValidation(
+    function afterCall(
         bytes memory layerConfig,
         bytes4 messageSig,
         address,

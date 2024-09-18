@@ -1,14 +1,12 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.20;
-import "./ILayer.sol";
+pragma solidity >=0.8.0 <0.9.0;
+import {IERC7746} from "./IERC7746.sol";
 
-library LibAccessLayers {
+library LibMiddleware {
     bytes32 constant ACCESS_LAYERS_STORAGE_POSITION = keccak256("lib.access.layer.storage");
 
     struct LayerStruct {
-        address layerAddess;
-        bytes4 beforeSig;
-        bytes4 afterSig;
+        address layerAddress;
         bytes layerConfigData;
     }
 
@@ -22,15 +20,13 @@ library LibAccessLayers {
     function setLayer(
         address layerAddress,
         uint256 layerIndex,
-        bytes memory layerConfigData,
-        bytes4 beforeCallMethodSignature,
-        bytes4 afterCallMethodSignature
+        bytes memory layerConfigData
+        // bytes4 beforeCallMethodSignature,
+        // bytes4 afterCallMethodSignature
     ) internal {
         LayerStruct[] storage ls = accessLayersStorage();
-        ls[layerIndex].layerAddess = layerAddress;
+        ls[layerIndex].layerAddress = layerAddress;
         ls[layerIndex].layerConfigData = layerConfigData;
-        ls[layerIndex].beforeSig = beforeCallMethodSignature;
-        ls[layerIndex].afterSig = afterCallMethodSignature;
     }
 
     function addLayer(LayerStruct memory newLayer) internal {
@@ -46,16 +42,12 @@ library LibAccessLayers {
 
     function addLayer(
         address layerAddress,
-        bytes memory layerConfigData,
-        bytes4 beforeCallMethodSignature,
-        bytes4 afterCallMethodSignature
+        bytes memory layerConfigData
     ) internal {
         LayerStruct[] storage ls = accessLayersStorage();
         LayerStruct memory newLayer = LayerStruct({
-            layerAddess: layerAddress,
-            layerConfigData: layerConfigData,
-            beforeSig: beforeCallMethodSignature,
-            afterSig: afterCallMethodSignature
+            layerAddress: layerAddress,
+            layerConfigData: layerConfigData
         });
         ls.push(newLayer);
     }
@@ -91,7 +83,7 @@ library LibAccessLayers {
         bytes memory data,
         uint256 value
     ) internal returns (bytes memory) {
-        bytes memory retval = ILayer(layer.layerAddess).beforeCallValidation(
+        bytes memory retval = IERC7746(layer.layerAddress).beforeCall(
             layer.layerConfigData,
             _selector,
             sender,
@@ -138,7 +130,7 @@ library LibAccessLayers {
         uint256 value,
         bytes memory beforeCallReturnValue
     ) internal {
-        ILayer(layer.layerAddess).afterCallValidation(
+        IERC7746(layer.layerAddress).afterCall(
             layer.layerConfigData,
             _selector,
             sender,

@@ -1,8 +1,8 @@
 import { HardhatRuntimeEnvironment } from "hardhat/types";
 import { DeployFunction } from "hardhat-deploy/types";
-import { LayeredProxy, RecoverableFuse } from "../types";
+import { RecoverableFuse } from "../types";
 import { ethers } from "hardhat";
-import { LibAccessLayers } from "../types/src/LayeredProxy";
+import { LibMiddleware } from "../types/src/MiddlewareProxy";
 
 const func: DeployFunction = async (hre: HardhatRuntimeEnvironment) => {
   const { deployments, getNamedAccounts } = hre;
@@ -11,23 +11,9 @@ const func: DeployFunction = async (hre: HardhatRuntimeEnvironment) => {
   const { deployer, owner } = await getNamedAccounts();
 
   const simpleLayer = await deployments.get("RecoverableFuse");
-  const simpleLayerContract = (await ethers.getContractAt(
-    simpleLayer.abi,
-    simpleLayer.address,
-  )) as RecoverableFuse;
 
-  let layer: LibAccessLayers.LayerStructStruct = {
-    layerAddess: simpleLayer.address,
-    beforeSig: simpleLayerContract.interface.getSighash(
-      simpleLayerContract.interface.functions[
-        "beforeCallValidation(bytes,bytes4,address,uint256,bytes)"
-      ],
-    ),
-    afterSig: simpleLayerContract.interface.getSighash(
-      simpleLayerContract.interface.functions[
-        "afterCallValidation(bytes,bytes4,address,uint256,bytes,bytes)"
-      ],
-    ),
+  let layer: LibMiddleware.LayerStructStruct = {
+    layerAddress: simpleLayer.address,
     layerConfigData: ethers.utils.defaultAbiCoder.encode(["uint256"], [10]),
   };
 
@@ -37,9 +23,9 @@ const func: DeployFunction = async (hre: HardhatRuntimeEnvironment) => {
     skipIfAlreadyDeployed: true,
   });
 
-  const lp = await deploy("LayeredProxy", {
+  const lp = await deploy("MiddlewareProxy", {
     from: deployer,
-    args: [owner, [layer], result.address],
+    args: [[layer], result.address],
     skipIfAlreadyDeployed: true,
   });
 };

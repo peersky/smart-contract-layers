@@ -1,13 +1,17 @@
 // SPDX-License-Identifier: MIT
-import "@openzeppelin/contracts/token/ERC20/extensions/ERC20Burnable.sol";
-import "@openzeppelin/contracts/access/Ownable.sol";
+import "@openzeppelin/contracts-upgradeable/token/ERC20/extensions/ERC20BurnableUpgradeable.sol";
+import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
 
 pragma solidity ^0.8.0;
 
-contract MockERC20 is ERC20Burnable, Ownable {
-    uint256 numTokens;
-
-    constructor() ERC20("Mock", "MCK") Ownable(msg.sender) {}
+contract MockERC20 is ERC20BurnableUpgradeable, OwnableUpgradeable {
+    constructor() {
+        initialize("Mock", "MOCK");
+    }
+    function initialize(string memory name, string memory symbol) public initializer {
+        __ERC20_init(name, symbol);
+        __Ownable_init(msg.sender);
+    }
 
     function mint(address to, uint256 amount) public {
         require(to != address(0), "MockERC20->mint: Address not specified");
