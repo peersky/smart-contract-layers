@@ -28,9 +28,9 @@ Such architectural decision allows for each layer to be managed by independent s
 
 In this proof of concept a simple rate limiter is implemented which limits number of transactions a method can be called during one block, reducing ability to drain contract funds.
 
-[LayeredProxy](https://github.com/peersky/smart-contract-layers/blob/main/src/LayeredProxy.sol) contract is modified version of TransparentUpgradeableProxy which adds a layered pattern that is defined by [LibAccessLayer](https://github.com/peersky/smart-contract-layers/blob/main/src/LibAccessLayers.sol) in form of a [modifier](https://github.com/peersky/smart-contract-layers/blob/main/src/AccessLayers.sol)
+[ERC7746Middleware](https://github.com/peersky/smart-contract-layers/blob/main/src/Protected.sol) contract is modified version of Proxy which adds a layered pattern that is defined by [LibMiddleware](https://github.com/peersky/smart-contract-layers/blob/main/src/LibMiddleware.sol) in form of a [modifier](https://github.com/peersky/smart-contract-layers/blob/main/src/ERC7746Middleware.sol)
 
-Contract protecting the implementation only needs to implement a [ILayer](https://github.com/peersky/smart-contract-layers/blob/main/src/ILayer.sol) in order to be connected
+Contract protecting the implementation only needs to implement a [IERC7746](https://github.com/peersky/smart-contract-layers/blob/main/src/IERC7746.sol) in order to be connected
 
 Drainer contract calls victim number of times defined by Drainer function input.
 
